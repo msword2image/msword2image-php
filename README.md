@@ -7,3 +7,11 @@ $convert = new MsWordToImageConvert($apiUser, $apiKey);
 $convert->fromURL('http://mswordtoimage.com/docs/demo.doc');
 $convert->toFile('demo.png');
 ```
+
+## Installation
+
+You can simple download [this github repo](https://github.com/msword2image/msword2image-php/archive/master.zip) as a zip file. Extract contents and include MsWordToImageConvert.php
+
+```php
+require_once 'lib/MsWordToImageConvert.php'
+```
