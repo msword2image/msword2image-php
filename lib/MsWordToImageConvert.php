@@ -167,7 +167,7 @@ class MsWordToImageConvert
         }
 
         $ch = curl_init();
-        foreach ($curlOptions as $key => $value) {
+        foreach ($curlOptionsReal as $key => $value) {
             curl_setopt($ch, $key, $value);
         }
         $result = curl_exec($ch);
