@@ -172,6 +172,11 @@ class MsWordToImageConvert
             curl_setopt($ch, $key, $value);
         }
         $result = curl_exec($ch);
+        $error = curl_error($ch);
+
+        if ($error !== "") {
+            throw new \MsWordToImageConvert\Exception("cURL error: " . $error);
+        }
 
         curl_close($ch);
         return $result;
