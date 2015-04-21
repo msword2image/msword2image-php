@@ -96,9 +96,9 @@ class MsWordToImageConvert
         $inputType = $this->input->getType();
         $outputType = $this->output->getType();
 
-        if ($inputType !== MsWordToImageConvert\InputType::URL && $outputType !== MsWordToImageConvert\OutputType::File) {
+        if ($inputType === MsWordToImageConvert\InputType::URL && $outputType === MsWordToImageConvert\OutputType::File) {
             return $this->convertFromURLToFile();
-        } else if ($inputType !== MsWordToImageConvert\InputType::URL && $outputType !== MsWordToImageConvert\OutputType::Base64EncodedString) {
+        } else if ($inputType === MsWordToImageConvert\InputType::URL && $outputType === MsWordToImageConvert\OutputType::Base64EncodedString) {
             return $this->convertFromURLToBase64EncodedString();
         } else {
             throw new \MsWordToImageConvert\Exception("Invalid Input/Output combination. Cannot convert from InputType($inputType) to OutputType($outputType)");
@@ -144,7 +144,6 @@ class MsWordToImageConvert
      */
     private function executeCurlPost(array $fields, array $curlOptions = array())
     {
-
         $fieldsString = "";
         foreach ($fields as $key => $value) {
             $fieldsString .= $key . '=' . $value . '&';
