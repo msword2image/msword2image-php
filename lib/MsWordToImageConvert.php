@@ -113,9 +113,11 @@ class MsWordToImageConvert
     {
         $curlResult = $this->executeCurlPost([
             'url' => urlencode($this->input->getValue())
+        ],[
+            CURLOPT_RETURNTRANSFER => 1
         ]);
         $curlResult = base64_encode($curlResult);
-        
+
         return $curlResult;
     }
 
