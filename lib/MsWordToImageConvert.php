@@ -142,7 +142,7 @@ class MsWordToImageConvert
      * @param array $curlOptions
      * @return mixed
      */
-    private function executeCurlPost(array $fields, array $curlOptions = array())
+    private function executeCurlPost(array $fields, $curlOptions = null)
     {
         $fieldsString = "";
         foreach ($fields as $key => $value) {
@@ -150,15 +150,22 @@ class MsWordToImageConvert
         }
         rtrim($fieldsString, '&');
 
-        $curlOptions = array_merge(
-            [
-                CURLOPT_URL => "http://msword2image.com/convert",
-                CURLOPT_HEADER => 0,
-                CURLOPT_POST => count($fields),
-                CURLOPT_POSTFIELDS => $fieldsString
-            ],
-            $curlOptions
-        );
+
+        $curlPredefinedOptions = [
+            CURLOPT_URL => "http://msword2image.com/convert",
+            CURLOPT_HEADER => 0,
+            CURLOPT_POST => count($fields),
+            CURLOPT_POSTFIELDS => $fieldsString
+        ];
+
+        if ($curlOptions !== null) {
+            $curlOptions = array_merge(
+                $curlPredefinedOptions,
+                $curlOptions
+            );
+        } else {
+            $curlOptions = $curlPredefinedOptions;
+        }
 
         $ch = curl_init();
         foreach ($curlOptions as $key => $value) {
