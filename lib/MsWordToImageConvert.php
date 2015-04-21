@@ -113,7 +113,6 @@ class MsWordToImageConvert
     {
         return $this->executeCurlPost([
             'url' => urlencode($this->input->getValue())
-        ], [
         ]);
     }
 
@@ -141,6 +140,7 @@ class MsWordToImageConvert
      * @param array $fields
      * @param array $curlOptions
      * @return mixed
+     * @throws \MsWordToImageConvert\Exception
      */
     private function executeCurlPost(array $fields, $curlOptions = null)
     {
