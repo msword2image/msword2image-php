@@ -111,9 +111,12 @@ class MsWordToImageConvert
      */
     private function convertFromURLToBase64EncodedString()
     {
-        return $this->executeCurlPost([
+        $curlResult = $this->executeCurlPost([
             'url' => urlencode($this->input->getValue())
         ]);
+        $curlResult = base64_encode($curlResult);
+        
+        return $curlResult;
     }
 
     /**
