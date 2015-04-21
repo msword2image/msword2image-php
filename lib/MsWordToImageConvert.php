@@ -113,7 +113,7 @@ class MsWordToImageConvert
     {
         $curlResult = $this->executeCurlPost([
             'url' => urlencode($this->input->getValue())
-        ],[
+        ], [
             CURLOPT_RETURNTRANSFER => 1
         ]);
         $curlResult = base64_encode($curlResult);
@@ -147,7 +147,7 @@ class MsWordToImageConvert
      * @return mixed
      * @throws \MsWordToImageConvert\Exception
      */
-    private function executeCurlPost(array $fields, $curlOptions = null)
+    private function executeCurlPost(array $fields, $curlOptions = array())
     {
         $fieldsString = "";
         foreach ($fields as $key => $value) {
@@ -155,24 +155,16 @@ class MsWordToImageConvert
         }
         rtrim($fieldsString, '&');
 
-
-        $curlPredefinedOptions = [
+        $curlOptionsReal = [
             CURLOPT_URL => "http://msword2image.com/convert",
             CURLOPT_HEADER => 0,
             CURLOPT_POST => count($fields),
             CURLOPT_POSTFIELDS => $fieldsString
         ];
 
-        if ($curlOptions !== null) {
-            $curlOptions = array_merge(
-                $curlPredefinedOptions,
-                $curlOptions
-            );
-        } else {
-            $curlOptions = $curlPredefinedOptions;
+        foreach ($curlOptions as $key => $value) {
+            $curlOptionsReal[$key] = $value;
         }
-        var_dump($curlOptions);
-        exit(0);
 
         $ch = curl_init();
         foreach ($curlOptions as $key => $value) {
