@@ -11,7 +11,7 @@ class Output
      * @param int|OutputType $type
      * @param string $value
      */
-    public function __construct($type, $value)
+    public function __construct($type, $value = null)
     {
         $this->type = $type;
         $this->value = $value;

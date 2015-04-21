@@ -64,8 +64,19 @@ class MsWordToImageConvert
     }
 
     /**
+     * Converts the input word document to image
+     * And returns it as Bas64 encoded string
+     * @return bool|string
+     */
+    public function toBase46EncodedString()
+    {
+        $this->output = new MsWordToImageConvert\Output(MsWordToImageConvert\OutputType::Base64EncodedString);
+        return $this->convert();
+    }
+
+    /**
      * Does the actual conversion
-     * @return bool
+     * @return mixed
      * @throws \MsWordToImageConvert\Exception
      */
     private function convert()
@@ -74,30 +85,65 @@ class MsWordToImageConvert
             throw new \MsWordToImageConvert\Exception("Input was not set. Try calling \$msWordToImageConvert->fromURL first");
         }
 
-        if ($this->input->getType() !== MsWordToImageConvert\InputType::URL) {
-            throw new \MsWordToImageConvert\Exception("Currently only conversion from URL is supported. Try calling \$msWordToImageConvert->fromURL first");
-        }
-
         if ($this->output === null) {
             throw new \MsWordToImageConvert\Exception("Output was not set.");
-        }
-
-        if ($this->output->getType() !== MsWordToImageConvert\OutputType::File) {
-            throw new \MsWordToImageConvert\Exception("Currently only conversion to File is supported. Try calling \$msWordToImageConvert->toFile first");
         }
 
         if (!function_exists("curl_init")) {
             throw new \MsWordToImageConvert\Exception("cURL library is required for MsWordToImageConvert");
         }
 
+        $inputType = $this->input->getType();
+        $outputType = $this->output->getType();
+
+        if ($inputType !== MsWordToImageConvert\InputType::URL && $outputType !== MsWordToImageConvert\OutputType::File) {
+            return $this->convertFromURLToFile();
+        } else if ($inputType !== MsWordToImageConvert\InputType::URL && $outputType !== MsWordToImageConvert\OutputType::Base64EncodedString) {
+            return $this->convertFromURLToBase64EncodedString();
+        } else {
+            throw new \MsWordToImageConvert\Exception("Invalid Input/Output combination. Cannot convert from InputType($inputType) to OutputType($outputType)");
+        }
+    }
+
+    /**
+     * Converts from URL to Base64 string only
+     * @return string
+     */
+    private function convertFromURLToBase64EncodedString()
+    {
+        return $this->executeCurlPost([
+            'url' => urlencode($this->input->getValue())
+        ], [
+        ]);
+    }
+
+    /**
+     * Converts from URL to File only
+     * @return bool
+     * @throws \MsWordToImageConvert\Exception
+     */
+    private function convertFromURLToFile()
+    {
         $out = fopen($this->output->getValue(), "wb");
         if (!$out) {
             throw new \MsWordToImageConvert\Exception("Couldn't fopen output file: " . $this->output->getValue());
         }
 
-        $fields = array(
+        return $this->executeCurlPost([
             'url' => urlencode($this->input->getValue())
-        );
+        ], [
+            CURLOPT_FILE => $out
+        ]);
+    }
+
+    /**
+     * Executs a CURL post request
+     * @param array $fields
+     * @param array $curlOptions
+     * @return mixed
+     */
+    private function executeCurlPost(array $fields, array $curlOptions = array())
+    {
 
         $fieldsString = "";
         foreach ($fields as $key => $value) {
@@ -105,13 +151,22 @@ class MsWordToImageConvert
         }
         rtrim($fieldsString, '&');
 
+        $curlOptions = array_merge(
+            [
+                CURLOPT_URL => "http://msword2image.com/convert",
+                CURLOPT_HEADER => 0,
+                CURLOPT_POST => count($fields),
+                CURLOPT_POSTFIELDS => $fieldsString
+            ],
+            $curlOptions
+        );
+
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, "http://msword2image.com/convert");
-        curl_setopt($ch, CURLOPT_FILE, $out);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_POST, count($fields));
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $fieldsString);
+        foreach ($curlOptions as $key => $value) {
+            curl_setopt($ch, $key, $value);
+        }
         $result = curl_exec($ch);
+
         curl_close($ch);
         return $result;
     }
