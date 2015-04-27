@@ -50,3 +50,22 @@ $base64String = $convert->toBase46EncodedString();
 echo "<img src='data:image/png;base64,$base64String' />";
 // Please make sure input file is readable by your PHP process.
 ```
+
+## Supported file formats
+
+<table>
+  <tbody>
+    <tr>
+      <td>Input\Output</td>
+      <td>PNG</td>
+    </tr>
+    <tr>
+      <td>DOC</td>
+      <td>✔</td>
+    </tr>
+    <tr>
+      <td>DOCX</td>
+      <td>✔</td>
+    </tr>
+  </tbody>
+</table>
