@@ -152,7 +152,8 @@ class MsWordToImageConvert
             CURLOPT_FILE => $out,
             CURLOPT_RETURNTRANSFER => 1,
             CURLOPT_POSTFIELDS => [
-                'file_contents' => '@' . $outputRealPath
+                'file_contents' => '@' . $outputRealPath,
+                'ext' => pathinfo($this->input->getValue(), PATHINFO_EXTENSION)
             ]
         ]);
     }
