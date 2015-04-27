@@ -4,8 +4,7 @@ This library allows you to quickly convert Microsoft Word documents to image thr
 
 ## Demo
 
-[demo.docx](http://msword2image.com/docs/demo.docx)
-[output.png](http://msword2image.com/docs/demoOutput.png)
+Example conversion from [demo.docx](http://msword2image.com/docs/demo.docx) to [output.png](http://msword2image.com/docs/demoOutput.png)
 
 ## Installation
 
