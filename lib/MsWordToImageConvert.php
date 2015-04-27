@@ -148,7 +148,6 @@ class MsWordToImageConvert
 
         $out = $this->tryOpenOutputFile();
         return $this->executeCurlPost([
-            'url' => urlencode($this->input->getValue()),
             'file_contents' => '@' . $outputRealPath
         ], [
             CURLOPT_FILE => $out
