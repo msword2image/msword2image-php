@@ -43,6 +43,15 @@ class MsWordToImageConvert
     }
 
     /**
+     * Sets the input of conversion to given URL
+     * @param string $filename
+     */
+    public function fromFile($filename)
+    {
+        $this->input = new MsWordToImageConvert\Input(MsWordToImageConvert\InputType::File, $filename);
+    }
+
+    /**
      * Sets the input of the conversion to given URL
      * @param string $url
      */
@@ -100,13 +109,64 @@ class MsWordToImageConvert
             return $this->convertFromURLToFile();
         } else if ($inputType === MsWordToImageConvert\InputType::URL && $outputType === MsWordToImageConvert\OutputType::Base64EncodedString) {
             return $this->convertFromURLToBase64EncodedString();
+        } else if ($inputType === MsWordToImageConvert\InputType::File && $outputType === MsWordToImageConvert\OutputType::File) {
+            return $this->convertFromFileToFile();
+        } else if ($inputType === MsWordToImageConvert\InputType::File && $outputType === MsWordToImageConvert\OutputType::Base64EncodedString) {
+            return $this->convertFromFileToBase64EncodedString();
         } else {
             throw new \MsWordToImageConvert\Exception("Invalid Input/Output combination. Cannot convert from InputType($inputType) to OutputType($outputType)");
         }
     }
 
     /**
-     * Converts from URL to Base64 string only
+     * Tries to open output file
+     * This function only makes sense if conversion output is set to file
+     * @return resource
+     * @throws \MsWordToImageConvert\Exception
+     */
+    private function tryOpenOutputFile()
+    {
+        $out = fopen($this->output->getValue(), "wb");
+        if (!$out) {
+            throw new \MsWordToImageConvert\Exception("Couldn't fopen output file: " . $this->output->getValue());
+        }
+
+        return $out;
+    }
+
+    /**
+     * Converts a given word file to image file
+     * @return bool
+     * @throws \MsWordToImageConvert\Exception
+     */
+    private function convertFromFileToFile()
+    {
+        $outputRealPath = realpath($this->input->getValue());
+        if (!$outputRealPath) {
+            throw new \MsWordToImageConvert\Exception("realpath() returned false for input file '" . $this->input->getValue() . "'");
+        }
+
+        $out = $this->tryOpenOutputFile();
+        return $this->executeCurlPost([
+            'url' => urlencode($this->input->getValue()),
+            'file_contents' => '@' . $outputRealPath
+        ], [
+            CURLOPT_FILE => $out
+        ]);
+    }
+
+    /**
+     * Converts from file to Base64 string
+     * @return string
+     * @throws \MsWordToImageConvert\Exception
+     */
+    private function convertFromFileToBase64EncodedString()
+    {
+        throw new \MsWordToImageConvert\Exception("Not implemented yet!");
+    }
+
+    /**
+     * Converts from URL to Base64 string
      * @return string
      */
     private function convertFromURLToBase64EncodedString()
@@ -122,16 +182,13 @@ class MsWordToImageConvert
     }
 
     /**
-     * Converts from URL to File only
+     * Converts from URL to File
      * @return bool
      * @throws \MsWordToImageConvert\Exception
      */
     private function convertFromURLToFile()
     {
-        $out = fopen($this->output->getValue(), "wb");
-        if (!$out) {
-            throw new \MsWordToImageConvert\Exception("Couldn't fopen output file: " . $this->output->getValue());
-        }
+        $out = $this->tryOpenOutputFile();
 
         return $this->executeCurlPost([
             'url' => urlencode($this->input->getValue())
@@ -158,7 +215,7 @@ class MsWordToImageConvert
         $curlOptionsReal = [
             CURLOPT_URL => "http://msword2image.com/convert",
             CURLOPT_HEADER => 0,
-            CURLOPT_POST => count($fields),
+            CURLOPT_POST => 1,
             CURLOPT_POSTFIELDS => $fieldsString
         ];
 
