@@ -157,6 +157,9 @@ class MsWordToImageConvert
 
         if($returnValue) {
             file_put_contents($this->output->getValue(), $returnValue);
+            $returnValue = true;
+        } else {
+            $returnValue = false;
         }
 
         return $returnValue;
