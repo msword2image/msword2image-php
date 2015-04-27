@@ -15,12 +15,12 @@ Note: Please make sure cURL is enabled with your PHP installation
 ## Usage
 
 ### 1. Convert from Word document URL to PNG file
-Please make sure output file is writable by your PHP process.
 
 ```php
 $convert = new MsWordToImageConvert($apiUser, $apiKey);
 $convert->fromURL('http://mswordtoimage.com/docs/demo.doc');
 $convert->toFile('demo.png');
+// Please make sure output file is writable by your PHP process.
 ```
 
 ### 2. Convert from Word document URL to base 64 encoded string
@@ -33,20 +33,20 @@ echo "<img src='data:image/png;base64,$base64String' />";
 ```
 
 ### 3. Convert from Word document file to PNG file
-Please make sure output file is writable and input file is readable by your PHP process.
 
 ```php
 $convert = new MsWordToImageConvert($apiUser, $apiKey);
 $convert->fromFile('demo.doc');
 $convert->toFile('demo.png');
+// Please make sure output file is writable and input file is readable by your PHP process.
 ```
 
 ### 4. Convert from Word document file to base 64 encoded string
-Please make sure input file is readable by your PHP process.
 
 ```php
 $convert = new MsWordToImageConvert($apiUser, $apiKey);
 $convert->fromFile('demo.doc');
 $base64String = $convert->toBase46EncodedString();
 echo "<img src='data:image/png;base64,$base64String' />";
+// Please make sure input file is readable by your PHP process.
 ```
