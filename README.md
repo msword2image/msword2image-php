@@ -23,7 +23,7 @@ $convert->toFile('demo.png');
 // Please make sure output file is writable by your PHP process.
 ```
 
-### 2. Convert from Word document URL to base 64 encoded string
+### 2. Convert from Word document URL to base 64 encoded PNG string
 
 ```php
 $convert = new MsWordToImageConvert($apiUser, $apiKey);
@@ -41,7 +41,7 @@ $convert->toFile('demo.png');
 // Please make sure output file is writable and input file is readable by your PHP process.
 ```
 
-### 4. Convert from Word file to base 64 encoded string
+### 4. Convert from Word file to base 64 encoded PNG string
 
 ```php
 $convert = new MsWordToImageConvert($apiUser, $apiKey);
