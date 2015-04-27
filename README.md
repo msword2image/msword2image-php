@@ -2,6 +2,11 @@
 
 This library allows you to quickly convert Microsoft Word documents to image through [msword2image.com](http://msword2image.com) using PHP.
 
+## Demo
+
+[demo.docx](http://msword2image.com/docs/demo.docx)
+[output.png](http://msword2image.com/docs/demoOutput.png)
+
 ## Installation
 
 You can simply download [this github repo](https://github.com/msword2image/msword2image-php/archive/master.zip) as a zip file. Extract contents and include MsWordToImageConvert.php
