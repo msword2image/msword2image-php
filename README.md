@@ -10,9 +10,12 @@ You can simply download [this github repo](https://github.com/msword2image/mswor
 require_once 'lib/MsWordToImageConvert.php';
 ```
 
+Note: Please make sure cURL is enabled with your PHP installation
+
 ## Usage
 
 ### 1. Convert from Word document URL to PNG file
+Please make sure output file is writable by your PHP process.
 
 ```php
 $convert = new MsWordToImageConvert($apiUser, $apiKey);
@@ -30,6 +33,7 @@ echo "<img src='data:image/png;base64,$base64String' />";
 ```
 
 ### 3. Convert from Word document file to PNG file
+Please make sure output file is writable and input file is readable by your PHP process.
 
 ```php
 $convert = new MsWordToImageConvert($apiUser, $apiKey);
@@ -38,6 +42,7 @@ $convert->toFile('demo.png');
 ```
 
 ### 4. Convert from Word document file to base 64 encoded string
+Please make sure input file is readable by your PHP process.
 
 ```php
 $convert = new MsWordToImageConvert($apiUser, $apiKey);
