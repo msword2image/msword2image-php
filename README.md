@@ -32,7 +32,7 @@ $base64String = $convert->toBase46EncodedString();
 echo "<img src='data:image/png;base64,$base64String' />";
 ```
 
-### 3. Convert from Word document file to PNG file
+### 3. Convert from Word file to PNG file
 
 ```php
 $convert = new MsWordToImageConvert($apiUser, $apiKey);
@@ -41,7 +41,7 @@ $convert->toFile('demo.png');
 // Please make sure output file is writable and input file is readable by your PHP process.
 ```
 
-### 4. Convert from Word document file to base 64 encoded string
+### 4. Convert from Word file to base 64 encoded string
 
 ```php
 $convert = new MsWordToImageConvert($apiUser, $apiKey);
