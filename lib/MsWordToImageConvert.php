@@ -150,7 +150,8 @@ class MsWordToImageConvert
         return $this->executeCurlPost([
             'file_contents' => '@' . $outputRealPath
         ], [
-            CURLOPT_FILE => $out
+            CURLOPT_FILE => $out,
+            CURLOPT_RETURNTRANSFER => 1
         ]);
     }
 
