@@ -56,6 +56,25 @@ $base64String = $convert->toBase46EncodedString();
 echo "<img src='data:image/png;base64,$base64String' />";
 // Please make sure input file is readable by your PHP process.
 ```
+### 5. Convert from Word file to base 64 encoded GIF string
+
+```php
+$convert = new MsWordToImageConvert($apiUser, $apiKey);
+$convert->fromFile('demo.doc');
+$base64String = $convert->toBase46EncodedString(\MsWordToImageConvert\OutputImageFormat::GIF);
+echo "<img src='data:image/gif;base64,$base64String' />";
+// Please make sure input file is readable by your PHP process.
+```
+
+### 6. Convert from Word file to base 64 encoded JPEG string
+
+```php
+$convert = new MsWordToImageConvert($apiUser, $apiKey);
+$convert->fromFile('demo.doc');
+$base64String = $convert->toBase46EncodedString(\MsWordToImageConvert\OutputImageFormat::JPEG);
+echo "<img src='data:image/jpeg;base64,$base64String' />";
+// Please make sure input file is readable by your PHP process.
+```
 
 ## Supported file formats
 
@@ -64,13 +83,19 @@ echo "<img src='data:image/png;base64,$base64String' />";
     <tr>
       <td>Input\Output</td>
       <td>PNG</td>
+      <td>GIF</td>
+      <td>JPEG</td>
     </tr>
     <tr>
       <td>DOC</td>
       <td>✔</td>
+      <td>✔</td>
+      <td>✔</td>
     </tr>
     <tr>
       <td>DOCX</td>
+      <td>✔</td>
+      <td>✔</td>
       <td>✔</td>
     </tr>
   </tbody>
