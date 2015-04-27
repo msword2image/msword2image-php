@@ -10,7 +10,7 @@ You can simply download [this github repo](https://github.com/msword2image/mswor
 require_once 'lib/MsWordToImageConvert.php';
 ```
 
-## Examples
+## Usage
 
 ### 1. Convert from document URL to PNG file
 
