@@ -135,27 +135,48 @@ class MsWordToImageConvert
     }
 
     /**
+     * @return string
+     * @throws \MsWordToImageConvert\Exception
+     */
+    private function tryRealPathInputFile()
+    {
+        $inputRealPath = realpath($this->input->getValue());
+        if (!$inputRealPath) {
+            throw new \MsWordToImageConvert\Exception("realpath() returned false for input file '" . $this->input->getValue() . "'");
+        }
+
+        return $inputRealPath;
+    }
+
+    /**
+     * @param $inputRealPath
+     * @return mixed
+     * @throws \MsWordToImageConvert\Exception
+     */
+    private function executeCurlPostFile($inputRealPath)
+    {
+        $returnValue = $this->executeCurlPost([
+        ], [
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_POSTFIELDS => [
+                'file_contents' => '@' . $inputRealPath
+            ]
+        ]);
+        return $returnValue;
+    }
+
+    /**
      * Converts a given word file to image file
      * @return bool
      * @throws \MsWordToImageConvert\Exception
      */
     private function convertFromFileToFile()
     {
-        $outputRealPath = realpath($this->input->getValue());
-        if (!$outputRealPath) {
-            throw new \MsWordToImageConvert\Exception("realpath() returned false for input file '" . $this->input->getValue() . "'");
-        }
-
+        $inputRealPath = $this->tryRealPathInputFile();
         $this->tryOpenOutputFile();
-        $returnValue = $this->executeCurlPost([
-        ], [
-            CURLOPT_RETURNTRANSFER => 1,
-            CURLOPT_POSTFIELDS => [
-                'file_contents' => '@' . $outputRealPath
-            ]
-        ]);
+        $returnValue = $this->executeCurlPostFile($inputRealPath);
 
-        if($returnValue) {
+        if ($returnValue) {
             file_put_contents($this->output->getValue(), $returnValue);
             $returnValue = true;
         } else {
@@ -167,12 +188,22 @@ class MsWordToImageConvert
 
     /**
      * Converts from file to Base64 string
-     * @return string
+     * @return string|bool
      * @throws \MsWordToImageConvert\Exception
      */
     private function convertFromFileToBase64EncodedString()
     {
-        throw new \MsWordToImageConvert\Exception("Not implemented yet!");
+        $inputRealPath = $this->tryRealPathInputFile();
+        $this->tryOpenOutputFile();
+        $returnValue = $this->executeCurlPostFile($inputRealPath);
+
+        if ($returnValue) {
+            $returnValue = base64_encode($returnValue);
+        } else {
+            $returnValue = false;
+        }
+
+        return $returnValue;
     }
 
     /**
