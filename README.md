@@ -12,7 +12,7 @@ require_once 'lib/MsWordToImageConvert.php';
 
 ## Usage
 
-### 1. Convert from document URL to PNG file
+### 1. Convert from Word document URL to PNG file
 
 ```php
 $convert = new MsWordToImageConvert($apiUser, $apiKey);
@@ -20,11 +20,28 @@ $convert->fromURL('http://mswordtoimage.com/docs/demo.doc');
 $convert->toFile('demo.png');
 ```
 
-### 2. Convert from document URL to base 64 encoded string
+### 2. Convert from Word document URL to base 64 encoded string
 
 ```php
 $convert = new MsWordToImageConvert($apiUser, $apiKey);
 $convert->fromURL('http://mswordtoimage.com/docs/demo.doc');
+$base64String = $convert->toBase46EncodedString();
+echo "<img src='data:image/png;base64,$base64String' />";
+```
+
+### 3. Convert from Word document file to PNG file
+
+```php
+$convert = new MsWordToImageConvert($apiUser, $apiKey);
+$convert->fromFile('demo.doc');
+$convert->toFile('demo.png');
+```
+
+### 4. Convert from Word document file to base 64 encoded string
+
+```php
+$convert = new MsWordToImageConvert($apiUser, $apiKey);
+$convert->fromFile('demo.doc');
 $base64String = $convert->toBase46EncodedString();
 echo "<img src='data:image/png;base64,$base64String' />";
 ```
