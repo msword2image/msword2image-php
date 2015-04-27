@@ -6,6 +6,7 @@ require_once(MS_WORD_TO_IMAGE_CONVERT_LIBDIR . 'InputType.php');
 require_once(MS_WORD_TO_IMAGE_CONVERT_LIBDIR . 'Output.php');
 require_once(MS_WORD_TO_IMAGE_CONVERT_LIBDIR . 'OutputType.php');
 require_once(MS_WORD_TO_IMAGE_CONVERT_LIBDIR . 'Exception.php');
+require_once(MS_WORD_TO_IMAGE_CONVERT_LIBDIR . 'OutputImageFormat.php');
 
 class MsWordToImageConvert
 {
@@ -64,22 +65,26 @@ class MsWordToImageConvert
      * Converts the input word document to image
      * And saves it in the given file name
      * @param string $filename
+     * @param string $imageFormat
      * @return bool
+     * @throws \MsWordToImageConvert\Exception
      */
-    public function toFile($filename)
+    public function toFile($filename, $imageFormat = \MsWordToImageConvert\OutputImageFormat::PNG)
     {
-        $this->output = new MsWordToImageConvert\Output(MsWordToImageConvert\OutputType::File, $filename);
+        $this->output = new MsWordToImageConvert\Output(MsWordToImageConvert\OutputType::File, $imageFormat, $filename);
         return $this->convert();
     }
 
     /**
      * Converts the input word document to image
      * And returns it as Bas64 encoded string
+     * @param string $imageFormat
      * @return bool|string
+     * @throws \MsWordToImageConvert\Exception
      */
-    public function toBase46EncodedString()
+    public function toBase46EncodedString($imageFormat = \MsWordToImageConvert\OutputImageFormat::PNG)
     {
-        $this->output = new MsWordToImageConvert\Output(MsWordToImageConvert\OutputType::Base64EncodedString);
+        $this->output = new MsWordToImageConvert\Output(MsWordToImageConvert\OutputType::Base64EncodedString, $imageFormat);
         return $this->convert();
     }
 
@@ -253,7 +258,7 @@ class MsWordToImageConvert
         rtrim($fieldsString, '&');
 
         $curlOptionsReal = [
-            CURLOPT_URL => "http://msword2image.com/convert",
+            CURLOPT_URL => "http://msword2image.com/convert?format=" . urlencode($this->output->getImageFormat()),
             CURLOPT_HEADER => 0,
             CURLOPT_POST => 1,
             CURLOPT_POSTFIELDS => $fieldsString
