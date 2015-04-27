@@ -194,7 +194,6 @@ class MsWordToImageConvert
     private function convertFromFileToBase64EncodedString()
     {
         $inputRealPath = $this->tryRealPathInputFile();
-        $this->tryOpenOutputFile();
         $returnValue = $this->executeCurlPostFile($inputRealPath);
 
         if ($returnValue) {
