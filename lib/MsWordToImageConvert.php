@@ -146,7 +146,7 @@ class MsWordToImageConvert
             throw new \MsWordToImageConvert\Exception("realpath() returned false for input file '" . $this->input->getValue() . "'");
         }
 
-        $out = $this->tryOpenOutputFile();
+        $this->tryOpenOutputFile();
         $returnValue = $this->executeCurlPost([
         ], [
             CURLOPT_RETURNTRANSFER => 1,
