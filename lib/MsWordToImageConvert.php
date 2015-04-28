@@ -258,7 +258,10 @@ class MsWordToImageConvert
         rtrim($fieldsString, '&');
 
         $curlOptionsReal = [
-            CURLOPT_URL => "http://msword2image.com/convert?format=" . urlencode($this->output->getImageFormat()),
+            CURLOPT_URL => "http://msword2image.com/convert?".
+                "apiUser=" . urlencode($this->apiUser) . "&".
+                "apiKey=" . urlencode($this->apiKey) . "&".
+                "format=" . urlencode($this->output->getImageFormat()),
             CURLOPT_HEADER => 0,
             CURLOPT_POST => 1,
             CURLOPT_POSTFIELDS => $fieldsString
