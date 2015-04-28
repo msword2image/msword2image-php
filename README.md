@@ -20,40 +20,40 @@ Note: Please make sure cURL is enabled with your PHP installation
 
 ## Usage
 
-### 1. Convert from Word document URL to PNG file
+### 1. Convert from Word document URL to JPEG file
 
 ```php
 $convert = new MsWordToImageConvert($apiUser, $apiKey);
 $convert->fromURL('http://mswordtoimage.com/docs/demo.doc');
-$convert->toFile('demo.png');
+$convert->toFile('demo.jpeg');
 // Please make sure output file is writable by your PHP process.
 ```
 
-### 2. Convert from Word document URL to base 64 PNG string
+### 2. Convert from Word document URL to base 64 JPEG string
 
 ```php
 $convert = new MsWordToImageConvert($apiUser, $apiKey);
 $convert->fromURL('http://mswordtoimage.com/docs/demo.doc');
 $base64String = $convert->toBase46EncodedString();
-echo "<img src='data:image/png;base64,$base64String' />";
+echo "<img src='data:image/jpeg;base64,$base64String' />";
 ```
 
-### 3. Convert from Word file to PNG file
+### 3. Convert from Word file to JPEG file
 
 ```php
 $convert = new MsWordToImageConvert($apiUser, $apiKey);
 $convert->fromFile('demo.doc');
-$convert->toFile('demo.png');
+$convert->toFile('demo.jpeg');
 // Please make sure output file is writable and input file is readable by your PHP process.
 ```
 
-### 4. Convert from Word file to base 64 encoded PNG string
+### 4. Convert from Word file to base 64 encoded JPEG string
 
 ```php
 $convert = new MsWordToImageConvert($apiUser, $apiKey);
 $convert->fromFile('demo.doc');
 $base64String = $convert->toBase46EncodedString();
-echo "<img src='data:image/png;base64,$base64String' />";
+echo "<img src='data:image/jpeg;base64,$base64String' />";
 // Please make sure input file is readable by your PHP process.
 ```
 ### 5. Convert from Word file to base 64 encoded GIF string
@@ -66,13 +66,13 @@ echo "<img src='data:image/gif;base64,$base64String' />";
 // Please make sure input file is readable by your PHP process.
 ```
 
-### 6. Convert from Word file to base 64 encoded JPEG string
+### 6. Convert from Word file to base 64 encoded PNG string
 
 ```php
 $convert = new MsWordToImageConvert($apiUser, $apiKey);
 $convert->fromFile('demo.doc');
 $base64String = $convert->toBase46EncodedString(\MsWordToImageConvert\OutputImageFormat::JPEG);
-echo "<img src='data:image/jpeg;base64,$base64String' />";
+echo "<img src='data:image/png;base64,$base64String' />";
 // Please make sure input file is readable by your PHP process.
 ```
 
