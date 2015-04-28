@@ -69,7 +69,7 @@ class MsWordToImageConvert
      * @return bool
      * @throws \MsWordToImageConvert\Exception
      */
-    public function toFile($filename, $imageFormat = \MsWordToImageConvert\OutputImageFormat::PNG)
+    public function toFile($filename, $imageFormat = \MsWordToImageConvert\OutputImageFormat::JPEG)
     {
         $this->output = new MsWordToImageConvert\Output(MsWordToImageConvert\OutputType::File, $imageFormat, $filename);
         return $this->convert();
@@ -82,7 +82,7 @@ class MsWordToImageConvert
      * @return bool|string
      * @throws \MsWordToImageConvert\Exception
      */
-    public function toBase46EncodedString($imageFormat = \MsWordToImageConvert\OutputImageFormat::PNG)
+    public function toBase46EncodedString($imageFormat = \MsWordToImageConvert\OutputImageFormat::JPEG)
     {
         $this->output = new MsWordToImageConvert\Output(MsWordToImageConvert\OutputType::Base64EncodedString, $imageFormat);
         return $this->convert();
