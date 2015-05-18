@@ -1,9 +1,6 @@
 <?php
-/*
- * Copyright (c) Degirmenci Yazilim.  All rights reserved.
- */
 
-chdir($_SERVER['DOCUMENT_ROOT']);
+namespace MsWordToImageConvert;
 
 abstract class OutputImagePage
 {
