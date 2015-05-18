@@ -120,7 +120,9 @@ class MsWordToImageConvert
         $inputType = $this->input->getType();
         $outputType = $this->output->getType();
 
-        if ($inputType === MsWordToImageConvert\InputType::URL && $outputType === MsWordToImageConvert\OutputType::PageCount) {
+        if ($inputType === MsWordToImageConvert\InputType::File && $outputType === MsWordToImageConvert\OutputType::PageCount) {
+            return $this->convertFromFileToPageCount();
+        } else if ($inputType === MsWordToImageConvert\InputType::URL && $outputType === MsWordToImageConvert\OutputType::PageCount) {
             return $this->convertFromURLToPageCount();
         } else if ($inputType === MsWordToImageConvert\InputType::URL && $outputType === MsWordToImageConvert\OutputType::File) {
             return $this->convertFromURLToFile();
@@ -236,6 +238,24 @@ class MsWordToImageConvert
         $curlResult = base64_encode($curlResult);
 
         return $curlResult;
+    }
+
+    /**
+     * Converts from File to page count
+     * @return int|bool
+     */
+    private function convertFromFileToPageCount()
+    {
+        $inputRealPath = $this->tryRealPathInputFile();
+        $returnValue = $this->executeCurlPostFile($inputRealPath);
+
+        if ($returnValue) {
+            $returnValue = intval($returnValue);
+        } else {
+            $returnValue = false;
+        }
+
+        return $returnValue;
     }
 
     /**
