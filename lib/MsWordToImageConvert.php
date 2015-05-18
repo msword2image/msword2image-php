@@ -62,6 +62,16 @@ class MsWordToImageConvert
     }
 
     /**
+     * Get's the page count
+     * @return int
+     */
+    public function toPageCount()
+    {
+        $this->output = new MsWordToImageConvert\Output(MsWordToImageConvert\OutputType::PageCount, null);
+        return $this->convert();
+    }
+
+    /**
      * Converts the input word document to image
      * And saves it in the given file name
      * @param string $filename
@@ -110,7 +120,9 @@ class MsWordToImageConvert
         $inputType = $this->input->getType();
         $outputType = $this->output->getType();
 
-        if ($inputType === MsWordToImageConvert\InputType::URL && $outputType === MsWordToImageConvert\OutputType::File) {
+        if ($inputType === MsWordToImageConvert\InputType::URL && $outputType === MsWordToImageConvert\OutputType::PageCount) {
+            return $this->convertFromURLToPageCount();
+        } else if ($inputType === MsWordToImageConvert\InputType::URL && $outputType === MsWordToImageConvert\OutputType::File) {
             return $this->convertFromURLToFile();
         } else if ($inputType === MsWordToImageConvert\InputType::URL && $outputType === MsWordToImageConvert\OutputType::Base64EncodedString) {
             return $this->convertFromURLToBase64EncodedString();
@@ -227,6 +239,22 @@ class MsWordToImageConvert
     }
 
     /**
+     * Converts from URL to page count
+     * @return int
+     */
+    private function convertFromURLToPageCount()
+    {
+        $curlResult = $this->executeCurlPost([
+            'url' => urlencode($this->input->getValue()),
+            'getPageCount' => '1'
+        ], [
+            CURLOPT_RETURNTRANSFER => 1
+        ]);
+
+        return intval($curlResult);
+    }
+
+    /**
      * Converts from URL to File
      * @return bool
      * @throws \MsWordToImageConvert\Exception
@@ -258,9 +286,9 @@ class MsWordToImageConvert
         rtrim($fieldsString, '&');
 
         $curlOptionsReal = [
-            CURLOPT_URL => "http://msword2image.com/convert?".
-                "apiUser=" . urlencode($this->apiUser) . "&".
-                "apiKey=" . urlencode($this->apiKey) . "&".
+            CURLOPT_URL => "http://msword2image.com/convert?" .
+                "apiUser=" . urlencode($this->apiUser) . "&" .
+                "apiKey=" . urlencode($this->apiKey) . "&" .
                 "format=" . urlencode($this->output->getImageFormat()),
             CURLOPT_HEADER => 0,
             CURLOPT_POST => 1,
