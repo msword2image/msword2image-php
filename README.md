@@ -96,6 +96,20 @@ $toPageCount = $convert->toPageCount();
 // Please make sure input file is readable by your PHP process.
 ```
 
+### 9. Get the specific page of a Word document as image
+
+```php
+$convert = new MsWordToImageConvert($apiUser, $apiKey);
+$convert->fromFile('demo2.doc');
+$base64String = $convert->toBase46EncodedString(
+    \MsWordToImageConvert\OutputImageFormat::JPEG,
+    2
+);
+echo "<img src='data:image/jpeg;base64,$base64String' />";
+// Note that pages are 0-indexed. Above code will print the third page of word document
+// Please make sure input file is readable by your PHP process.
+```
+
 ## Supported file formats
 
 <table>
