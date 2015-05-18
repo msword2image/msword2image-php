@@ -175,13 +175,12 @@ class MsWordToImageConvert
      */
     private function executeCurlPostFile($inputRealPath, $postFields = array())
     {
+        $postFields['file_contents'] = '@' . $inputRealPath;
         $returnValue = $this->executeCurlPost(
-            $postFields,
+            [],
             [
                 CURLOPT_RETURNTRANSFER => 1,
-                CURLOPT_POSTFIELDS => [
-                    'file_contents' => '@' . $inputRealPath
-                ]
+                CURLOPT_POSTFIELDS => $postFields
             ]
         );
 
