@@ -76,6 +76,26 @@ echo "<img src='data:image/png;base64,$base64String' />";
 // Please make sure input file is readable by your PHP process.
 ```
 
+### 7. Get the page count of a given Word file
+
+```php
+$convert = new MsWordToImageConvert($apiUser, $apiKey);
+$convert->fromFile('demo2.doc');
+$toPageCount = $convert->toPageCount(); 
+// $toPageCount will be integer representing the page count in the word file
+// Please make sure input file is readable by your PHP process.
+```
+
+### 8. Get the page count of a given Word file URL
+
+```php
+$convert = new MsWordToImageConvert($apiUser, $apiKey);
+$convert->fromFile('http://msword2image.com/docs/demo2.doc');
+$toPageCount = $convert->toPageCount(); 
+// $toPageCount should be 5
+// Please make sure input file is readable by your PHP process.
+```
+
 ## Supported file formats
 
 <table>
@@ -85,15 +105,18 @@ echo "<img src='data:image/png;base64,$base64String' />";
       <td>PNG</td>
       <td>GIF</td>
       <td>JPEG</td>
+      <td>Page count</td>
     </tr>
     <tr>
       <td>DOC</td>
       <td>✔</td>
       <td>✔</td>
       <td>✔</td>
+      <td>✔</td>
     </tr>
     <tr>
       <td>DOCX</td>
+      <td>✔</td>
       <td>✔</td>
       <td>✔</td>
       <td>✔</td>
