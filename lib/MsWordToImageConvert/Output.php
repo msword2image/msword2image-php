@@ -6,17 +6,21 @@ class Output
 {
     private $type;
     private $imageFormat;
+    private $whichPage;
     private $value;
 
     /**
      * @param int|OutputType $type
      * @param string|OutputImageFormat $imageFormat
+     * @param int|OutputImagePage $whichPage
      * @param string $value
      */
-    public function __construct($type, $imageFormat, $value = null)
+
+    public function __construct($type, $imageFormat, $whichPage, $value = null)
     {
         $this->type = $type;
         $this->imageFormat = $imageFormat;
+        $this->whichPage = $whichPage;
         $this->value = $value;
     }
 
@@ -42,5 +46,13 @@ class Output
     public function getImageFormat()
     {
         return $this->imageFormat;
+    }
+
+    /**
+     * @return int|OutputImagePage
+     */
+    public function getWhichPage()
+    {
+        return $this->whichPage;
     }
 }

@@ -7,6 +7,7 @@ require_once(MS_WORD_TO_IMAGE_CONVERT_LIBDIR . 'Output.php');
 require_once(MS_WORD_TO_IMAGE_CONVERT_LIBDIR . 'OutputType.php');
 require_once(MS_WORD_TO_IMAGE_CONVERT_LIBDIR . 'Exception.php');
 require_once(MS_WORD_TO_IMAGE_CONVERT_LIBDIR . 'OutputImageFormat.php');
+require_once(MS_WORD_TO_IMAGE_CONVERT_LIBDIR . 'OutputImagePage.php');
 
 class MsWordToImageConvert
 {
@@ -67,7 +68,12 @@ class MsWordToImageConvert
      */
     public function toPageCount()
     {
-        $this->output = new MsWordToImageConvert\Output(MsWordToImageConvert\OutputType::PageCount, null);
+        $this->output = new MsWordToImageConvert\Output(
+            MsWordToImageConvert\OutputType::PageCount,
+            null,
+            null
+        );
+
         return $this->convert();
     }
 
@@ -76,12 +82,21 @@ class MsWordToImageConvert
      * And saves it in the given file name
      * @param string $filename
      * @param string $imageFormat
+     * @param int $whichPage
      * @return bool
      * @throws \MsWordToImageConvert\Exception
      */
-    public function toFile($filename, $imageFormat = \MsWordToImageConvert\OutputImageFormat::JPEG)
+    public function toFile($filename,
+                           $imageFormat = \MsWordToImageConvert\OutputImageFormat::JPEG,
+                           $whichPage = MsWordToImageConvert\OutputImagePage::ALL)
     {
-        $this->output = new MsWordToImageConvert\Output(MsWordToImageConvert\OutputType::File, $imageFormat, $filename);
+        $this->output = new MsWordToImageConvert\Output(
+            MsWordToImageConvert\OutputType::File,
+            $imageFormat,
+            $whichPage,
+            $filename
+        );
+
         return $this->convert();
     }
 
@@ -89,12 +104,19 @@ class MsWordToImageConvert
      * Converts the input word document to image
      * And returns it as Bas64 encoded string
      * @param string $imageFormat
+     * @param int $whichPage
      * @return bool|string
      * @throws \MsWordToImageConvert\Exception
      */
-    public function toBase46EncodedString($imageFormat = \MsWordToImageConvert\OutputImageFormat::JPEG)
+    public function toBase46EncodedString($imageFormat = \MsWordToImageConvert\OutputImageFormat::JPEG,
+                                          $whichPage = MsWordToImageConvert\OutputImagePage::ALL)
     {
-        $this->output = new MsWordToImageConvert\Output(MsWordToImageConvert\OutputType::Base64EncodedString, $imageFormat);
+        $this->output = new MsWordToImageConvert\Output(
+            MsWordToImageConvert\OutputType::Base64EncodedString,
+            $imageFormat,
+            $whichPage
+        );
+
         return $this->convert();
     }
 
@@ -317,6 +339,7 @@ class MsWordToImageConvert
             CURLOPT_URL => "http://msword2image.com/convert?" .
                 "apiUser=" . urlencode($this->apiUser) . "&" .
                 "apiKey=" . urlencode($this->apiKey) . "&" .
+                "whichPage=" . urlencode($this->output->getWhichPage()) . "&" .
                 "format=" . urlencode($this->output->getImageFormat()),
             CURLOPT_HEADER => 0,
             CURLOPT_POST => 1,
