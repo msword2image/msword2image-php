@@ -169,18 +169,22 @@ class MsWordToImageConvert
 
     /**
      * @param $inputRealPath
+     * @param $postFields array
      * @return mixed
      * @throws \MsWordToImageConvert\Exception
      */
-    private function executeCurlPostFile($inputRealPath)
+    private function executeCurlPostFile($inputRealPath, $postFields = array())
     {
-        $returnValue = $this->executeCurlPost([
-        ], [
-            CURLOPT_RETURNTRANSFER => 1,
-            CURLOPT_POSTFIELDS => [
-                'file_contents' => '@' . $inputRealPath
+        $returnValue = $this->executeCurlPost(
+            $postFields,
+            [
+                CURLOPT_RETURNTRANSFER => 1,
+                CURLOPT_POSTFIELDS => [
+                    'file_contents' => '@' . $inputRealPath
+                ]
             ]
-        ]);
+        );
+
         return $returnValue;
     }
 
@@ -247,7 +251,12 @@ class MsWordToImageConvert
     private function convertFromFileToPageCount()
     {
         $inputRealPath = $this->tryRealPathInputFile();
-        $returnValue = $this->executeCurlPostFile($inputRealPath);
+        $returnValue = $this->executeCurlPostFile(
+            $inputRealPath,
+            [
+                "getPageCount" => "1"
+            ]
+        );
 
         if ($returnValue) {
             $returnValue = intval($returnValue);
