@@ -335,12 +335,20 @@ class MsWordToImageConvert
         }
         rtrim($fieldsString, '&');
 
+        $whichPage = is_null($this->output->getWhichPage()) ?
+            MsWordToImageConvert\OutputImagePage::ALL :
+            $this->output->getWhichPage();
+
+        $format = is_null($this->output->getImageFormat()) ?
+            MsWordToImageConvert\OutputImageFormat::PNG :
+            $this->output->getImageFormat();
+
         $curlOptionsReal = [
             CURLOPT_URL => "http://msword2image.com/convert?" .
                 "apiUser=" . urlencode($this->apiUser) . "&" .
                 "apiKey=" . urlencode($this->apiKey) . "&" .
-                "whichPage=" . urlencode($this->output->getWhichPage()) . "&" .
-                "format=" . urlencode($this->output->getImageFormat()),
+                "whichPage=" . urlencode($whichPage) . "&" .
+                "format=" . urlencode($format),
             CURLOPT_HEADER => 0,
             CURLOPT_POST => 1,
             CURLOPT_POSTFIELDS => $fieldsString
